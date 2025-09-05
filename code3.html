@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>UrbanFolio — Sleek Modern Portfolio</title>
+<meta name="description" content="UrbanFolio — a sleek, urban-inspired portfolio with dark theme and accent highlights." />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0f1216;
+    --panel:#151a21;
+    --muted:#9aa4b2;
+    --text:#e8edf2;
+    --accent:#11a8a8;     /* Teal default */
+    --accent-2:#ff7a1a;   /* Orange alternative */
+    --card:#1b212a;
+    --border:#232a33;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+    --radius:14px;
+    --radius-sm:10px;
+    --speed:.25s;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:"Inter",system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+    background: radial-gradient(1200px 600px at 10% -10%, rgba(17,168,168,.08), transparent 60%),
+                radial-gradient(1200px 600px at 110% -10%, rgba(255,122,26,.06), transparent 60%),
+                var(--bg);
+    color:var(--text);
+    line-height:1.55;
+  }
+
+  /* Header / Nav */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(15,18,22,.7);
+    backdrop-filter:saturate(140%) blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .wrap{
+    max-width:1100px; margin:0 auto; padding:14px 20px;
+    display:flex; align-items:center; gap:18px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px;
+  }
+  .logo{
+    width:34px; height:34px; border-radius:10px;
+    background:linear-gradient(145deg, var(--accent), #0f7c7c);
+    box-shadow:0 6px 18px rgba(17,168,168,.4), inset 0 0 10px rgba(255,255,255,.06);
+  }
+  nav{
+    margin-left:auto; display:flex; gap:8px; flex-wrap:wrap;
+  }
+  .nav-btn{
+    appearance:none; border:1px solid var(--border); background:transparent;
+    color:var(--text); padding:10px 14px; border-radius:10px; cursor:pointer;
+    transition:transform var(--speed), background var(--speed), border var(--speed);
+  }
+  .nav-btn:hover{ transform:translateY(-2px); border-color:color-mix(in oklab, var(--accent) 50%, var(--border)); }
+  .nav-btn.active{ background:color-mix(in oklab, var(--accent) 22%, transparent); border-color:var(--accent); }
+
+  /* Accent Toggle */
+  .toggle{
+    margin-left:8px; display:flex; align-items:center; gap:8px;
+    border:1px solid var(--border); padding:8px 10px; border-radius:999px;
+  }
+  .dot{
+    width:14px; height:14px; border-radius:50%;
+    box-shadow:0 0 0 2px var(--border) inset;
+  }
+  .dot.teal{ background:var(--accent); }
+  .dot.orange{ background:var(--accent-2); }
+  .toggle button{
+    background:transparent; color:var(--muted); border:none; cursor:pointer; padding:6px 8px; border-radius:8px;
+  }
+  .toggle button.active{ color:var(--text); background:#11161c; }
+
+  /* Main panel */
+  #content{
+    max-width:1100px; margin:28px auto; padding:0 20px;
+  }
+  .panel{
+    background:linear-gradient(180deg, rgba(255,255,255,.02), transparent 60%), var(--panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:28px;
+    animation:fadeIn .35s ease;
+  }
+  h2{
+    margin:0 0 10px; font-size:24px; letter-spacing:.2px;
+  }
+  p{ color:var(--muted); margin:8px 0 16px }
+
+  /* Home highlight strip */
+  .hero{
+    display:grid; gap:16px;
+  }
+  .stat-row{
+    display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px;
+  }
+  .stat{
+    background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px;
+  }
+  .kpi{ font-size:22px; font-weight:700; color:var(--accent) }
+  .label{ color:var(--muted); font-size:12px }
+
+  /* About grid */
+  .about-grid{
+    display:grid; grid-template-columns: 280px 1fr; gap:22px; align-items:start;
+  }
+  .card{
+    background:var(--card); border:1px solid var(--border); border-radius:var(--radius-sm); padding:18px;
+    transition:transform var(--speed), border var(--speed), box-shadow var(--speed);
+  }
+  .card:hover{
+    transform:translateY(-4px);
+    border-color:color-mix(in oklab, var(--accent) 40%, var(--border));
+    box-shadow:0 12px 26px rgba(17,168,168,.14);
+  }
+  .avatar{
+    width:100%; aspect-ratio:1/1; border-radius:12px; background:
+      radial-gradient(80% 60% at 30% 20%, rgba(255,255,255,.06), transparent),
+      linear-gradient(145deg, #1f2630, #131820);
+    border:1px solid var(--border);
+    display:grid; place-items:center; color:var(--muted); font-weight:600;
+  }
+  .skills{
+    display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:8px;
+  }
+  .skill{
+    background:#12171d; border:1px dashed var(--border); color:var(--text);
+    padding:10px 12px; border-radius:9px; font-size:14px; text-align:center;
+  }
+
+  /* Projects grid */
+  .projects{
+    display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:16px;
+  }
+  .project{
+    background:linear-gradient(180deg, rgba(255,255,255,.02), transparent 60%), var(--card);
+    border:1px solid var(--border); border-radius:12px; padding:16px;
+    transition:transform var(--speed), box-shadow var(--speed), border var(--speed);
+  }
+  .project:hover{
+    transform:translateY(-6px) scale(1.01);
+    border-color:var(--accent);
+    box-shadow:0 16px 36px rgba(17,168,168,.18);
+  }
+  .project .tags{ display:flex; gap:8px; flex-wrap:wrap; margin-top:8px }
+  .tag{
+    font-size:12px; color:var(--text);
+    background:color-mix(in oklab, var(--accent) 18%, transparent);
+    border:1px solid color-mix(in oklab, var(--accent) 60%, var(--border));
+    padding:6px 8px; border-radius:999px;
+  }
+
+  /* Contact */
+  .contact-grid{
+    display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px;
+  }
+  .contact{
+    display:flex; align-items:center; gap:12px; padding:14px; border-radius:10px;
+    background:var(--card); border:1px solid var(--border);
+    transition:transform var(--speed), border var(--speed);
+  }
+  .contact:hover{ transform:translateY(-4px); border-color:var(--accent) }
+  .icon{
+    width:36px; height:36px; border-radius:10px;
+    display:grid; place-items:center;
+    background:linear-gradient(145deg, var(--accent), color-mix(in oklab, var(--accent) 40%, #0a0d11));
+  }
+
+  /* Footer */
+  footer{
+    margin:28px auto 40px; max-width:1100px; color:var(--muted); font-size:14px; padding:0 20px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .mini{
+    border:1px solid var(--border); padding:8px 10px; border-radius:9px; color:var(--muted);
+  }
+
+  /* Responsive */
+  @media (max-width: 980px){
+    .about-grid{ grid-template-columns:1fr; }
+    .projects{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .skills{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .stat-row{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+  }
+  @media (max-width: 640px){
+    nav{ display:none } /* keep header minimal on small screens */
+    .projects{ grid-template-columns:1fr; }
+    .skills{ grid-template-columns:1fr; }
+    .contact-grid{ grid-template-columns:1fr; }
+    .stat-row{ grid-template-columns:1fr; }
+    .wrap{ justify-content:space-between }
+  }
+
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <span>UrbanFolio</span>
+    </div>
+
+    <nav aria-label="Primary">
+      <button class="nav-btn active" onclick="showSection('home')">Home</button>
+      <button class="nav-btn" onclick="showSection('about')">About</button>
+      <button class="nav-btn" onclick="showSection('projects')">Projects</button>
+      <button class="nav-btn" onclick="showSection('contact')">Contact</button>
+    </nav>
+
+    <div class="toggle" role="group" aria-label="Accent color">
+      <span class="dot teal" title="Teal accent"></span>
+      <button id="tealBtn" class="active" onclick="setAccent('teal')" aria-pressed="true">Teal</button>
+      <span class="dot orange" title="Orange accent"></span>
+      <button id="orangeBtn" onclick="setAccent('orange')" aria-pressed="false">Orange</button>
+    </div>
+  </div>
+</header>
+
+<main id="content"></main>
+
+<footer>
+  <span class="mini">© 2025 UrbanFolio • HTML • CSS • JS</span>
+  <span class="mini">Accent: <strong id="accentName">Teal</strong></span>
+</footer>
+
+<script>
+  // Content renderer
+  function showSection(key){
+    const c = document.getElementById('content');
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    const btn = [...document.querySelectorAll('.nav-btn')].find(b => b.textContent.toLowerCase().includes(key));
+    if(btn) btn.classList.add('active');
+
+    if(key==='home'){
+      c.innerHTML = `
+        <section class="panel hero" aria-label="Home">
+          <h2>Welcome 👋</h2>
+          <p>I'm <strong>Your Name</strong>, a developer focused on clean, modern web experiences. UrbanFolio is my sleek, business-ready portfolio with a calm urban vibe and subtle accent highlights.</p>
+          <div class="stat-row">
+            <div class="stat">
+              <div class="kpi">8+</div>
+              <div class="label">Projects</div>
+            </div>
+            <div class="stat">
+              <div class="kpi">5</div>
+              <div class="label">Core Skills</div>
+            </div>
+            <div class="stat">
+              <div class="kpi">100%</div>
+              <div class="label">Responsive</div>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+    else if(key==='about'){
+      c.innerHTML = `
+        <section class="panel" aria-label="About">
+          <h2>About Me</h2>
+          <p>I’m a detail-oriented developer who enjoys building reliable, accessible, and performant web apps. I keep interfaces minimal and interactions smooth, so the content stays in focus.</p>
+          <div class="about-grid">
+            <div class="card">
+              <div class="avatar">Your<br/>Photo</div>
+            </div>
+            <div class="card">
+              <h3 style="margin-top:0">Skills</h3>
+              <div class="skills">
+                <div class="skill">HTML5</div>
+                <div class="skill">CSS3</div>
+                <div class="skill">JavaScript</div>
+                <div class="skill">Responsive UI</div>
+                <div class="skill">Git / GitHub</div>
+                <div class="skill">Accessibility</div>
+              </div>
+              <p style="margin-top:16px">I value code quality, thoughtful design systems, and small details—like keyboard focus states and motion that feels natural.</p>
+            </div>
+          </div>
+        </section>
+      `;
+    }
+    else if(key==='projects'){
+      c.innerHTML = `
+        <section class="panel" aria-label="Projects">
+          <h2>Projects</h2>
+          <p>Here are a few selected works. Each card includes a short description and the tech used.</p>
+          <div class="projects">
+            <article class="project">
+              <h3 style="margin:0 0 6px">UrbanFolio</h3>
+              <p>A sleek portfolio template with dark theme, accent highlights, and responsive grid.</p>
+              <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JS</span></div>
+            </article>
+            <article class="project">
+              <h3 style="margin:0 0 6px">TaskTrack</h3>
+              <p>Simple task manager with persistent storage and keyboard-first navigation.</p>
+              <div class="tags"><span class="tag">JavaScript</span><span class="tag">LocalStorage</span></div>
+            </article>
+            <article class="project">
+              <h3 style="margin:0 0 6px">CalcPro</h3>
+              <p>Clean, accessible calculator UI with proper focus management and responsive keys.</p>
+              <div class="tags"><span class="tag">HTML</span><span class="tag">CSS Grid</span></div>
+            </article>
+          </div>
+        </section>
+      `;
+    }
+    else if(key==='contact'){
+      c.innerHTML = `
+        <section class="panel" aria-label="Contact">
+          <h2>Contact</h2>
+          <p>Let’s connect. I’m open to internships, full-time roles, or freelance work.</p>
+          <div class="contact-grid">
+            <a class="contact" href="mailto:example@mail.com">
+              <div class="icon" aria-hidden="true">✉️</div>
+              <div>
+                <strong>Email</strong>
+                <div class="label">aruneshangv@gmail.com</div>
+              </div>
+            </a>
+            <a class="contact" href="tel:+91 99441 27628">
+              <div class="icon" aria-hidden="true">📞</div>
+              <div>
+                <strong>Phone</strong>
+                <div class="label">+1 234 567 890</div>
+              </div>
+            </a>
+            <a class="contact" target="_blank" rel="noopener" href="https://github.com/arun0017i">
+              <div class="icon" aria-hidden="true">💻</div>
+              <div>
+                <strong>GitHub</strong>
+                <div class="label">github.com/yourusername</div>
+              </div>
+            </a>
+          </div>
+        </section>
+      `;
+    }
+    window.scrollTo({ top:0, behavior:'smooth' });
+  }
+
+  // Accent color toggle
+  function setAccent(which){
+    const root = document.documentElement.style;
+    const tealBtn = document.getElementById('tealBtn');
+    const orangeBtn = document.getElementById('orangeBtn');
+    const nameEl = document.getElementById('accentName');
+
+    if(which==='orange'){
+      root.setProperty('--accent','var(--accent-2)');
+      tealBtn.classList.remove('active'); tealBtn.setAttribute('aria-pressed','false');
+      orangeBtn.classList.add('active'); orangeBtn.setAttribute('aria-pressed','true');
+      nameEl.textContent = 'Orange';
+    }else{
+      root.setProperty('--accent','var(--accent)');
+      // Reset by reassigning actual value (teal default)
+      root.setProperty('--accent','#11a8a8');
+      tealBtn.classList.add('active'); tealBtn.setAttribute('aria-pressed','true');
+      orangeBtn.classList.remove('active'); orangeBtn.setAttribute('aria-pressed','false');
+      nameEl.textContent = 'Teal';
+    }
+  }
+
+  // Init
+  showSection('home');
+</script>
+</body>
+</html>
